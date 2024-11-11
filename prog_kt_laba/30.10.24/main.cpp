@@ -3,7 +3,8 @@
 using namespace std;
 
 float tsum = 0.75;
-int count, n, slag = 0;
+int count = 1;
+int n = 2;
 float sum, eps, diff = 0;
 
 /*
@@ -14,23 +15,27 @@ sum - сумма
 diff - разность точного значенме и суммы
 */
 
-void init_var() { // иницавлизвция переменных
-  n = 2;
-  diff = fabs(tsum - sum);
+void main_computing() { // основные вычисления
+  while (n != eps) {
+    sum = (sum + (1 / (pow(n, 2) - 1)));
+    n += 1;
+    count += 1;
+  }
+  diff = fabs(sum - tsum);
+  cout << "Количество просуммированных элементов: " << count << "\nСумма: " << sum << "\nРазность суммы и точного значения: " << diff << endl;
 }
 
-void main_computing() {
-  while (sum != eps) {
-    sum = (1 / ((n - 1) * (n + 1)));
-    n += 1;
-    cout << sum << endl;
-    cout << n << endl;
+void inpt_varibles() {
+  cout << "Введите точность: ";
+  cin >> eps;
+
+  if (eps <= 0 or floor(eps) != eps or eps == 1) {
+    cout << "Введённое число меньше или равно нулю, не является целочисленны или равняется 1.\n";
+    exit(1);
   }
 }
 
 int main() { // основное тело
-  cout << "Введите точность: ";
-  cin >> eps;
-  init_var();
+  inpt_varibles();
   main_computing();
 }
