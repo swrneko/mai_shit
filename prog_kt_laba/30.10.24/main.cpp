@@ -5,8 +5,8 @@
 * Project Name  : proj_1                                        *
 * File Name     : main.cpp                                      *
 * Language      : C/C++                                         *
-* Programmer(s) : Егоров А.В, Федоров А.И.                      *
-* Modifyed By   : Егоров А.В                                    *
+* Programmer(s) : Егоров А.В (swrneko), Федоров А.И.            *
+* Modifyed By   : Егоров А.В (swrneko)                          *
 * Edited by     : Neovim, Visual Studio                         *
 * OS            : Arch Linux, Windows 11                        *
 * Github url    : https://github.com/swrneko/mai_shit.git       *
