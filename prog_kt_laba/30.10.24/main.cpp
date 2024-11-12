@@ -15,25 +15,28 @@ sum - сумма
 diff - разность точного значенме и суммы
 */
 
-void main_computing() { // основные вычисления
-  while (n != eps) {
-    sum = (sum + (1 / (pow(n, 2) - 1)));
-    n += 1;
-    count += 1;
-  }
-  diff = fabs(sum - tsum);
-  cout << "Количество просуммированных элементов: " << count << "\nСумма: " << sum << "\nРазность суммы и точного значения: " << diff << endl;
-}
-
 void inpt_varibles() {
   cout << "Введите точность: ";
   cin >> eps;
+  diff = fabs(tsum - sum);
 
-  if (eps <= 0 or floor(eps) != eps or eps == 1) {
-    cout << "Введённое число меньше или равно нулю, не является целочисленны или равняется 1.\n";
+  if (eps <= 0) {
+    cout << "Введённое число меньше или равно нулю.\n";
     exit(1);
   }
 }
+
+void main_computing() { // основные вычисления
+  while (diff >= eps) {
+    sum = (sum + (1 / (pow(n, 2) - 1)));
+    n += 1;
+    count += 1;
+    diff = fabs(tsum - sum);
+  }
+  cout << "Количество просуммированных элементов: " << count << "\nСумма: " << sum << "\nРазность суммы и точного значения: " << diff << endl;
+}
+
+
 
 int main() { // основное тело
   inpt_varibles();
