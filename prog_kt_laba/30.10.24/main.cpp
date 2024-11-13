@@ -24,12 +24,12 @@ int count = 1; // count - кол-во суммированных эл-тов
 int n = 2; // n - порядковый номер элемента
 float sum, eps, diff = 0; // sum - сумма, esp - ввод точности, diff - разность точного значенме и суммы
 
-int main() { // основное тело
+int main() { // основная функция
   setlocale(LC_ALL, "Russian");
 
   cout << "Введите точность: ";
   cin >> eps;
-  diff = fabs(tsum - sum);
+  diff = abs(tsum - sum);
 
   if (eps <= 0) {
     cout << "Введённое число меньше или равно нулю.\n";
@@ -40,7 +40,7 @@ int main() { // основное тело
     sum = (sum + (1 / (pow(n, 2) - 1)));
     n += 1;
     count += 1;
-    diff = fabs(tsum - sum);
+    diff = abs(tsum - sum);
   }
   cout << "Количество просуммированных элементов: " << count << "\nСумма: " << sum << "\nРазность суммы и точного значения: " << diff << endl;
 }
