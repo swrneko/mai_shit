@@ -28,8 +28,8 @@ using namespace std;
 **********/
 #define step_lenth ((b - a) / n) // Формула величины шага
 #define arg_increment (a + (i * h)) // Формула приращения аргумента
-#define F(Xi) (2 - cos(xi)) // F(xi)
-#define G(Xi) (1 - pow(xi,2)) // G(xi)
+#define F(x) (2 - cos(x)) // F(x)
+#define G(x) (1 - pow(x,2)) // G(x)
 
 /*************
 * Переменные *
@@ -38,7 +38,6 @@ float a; // Начальная точка отрезка
 float b; // Конечная точка отрезка
 float h; // Величина шага
 float x; // Аргумент функций
-float xi; // Приращение аргумента
 int n; // Количество интервалов
 int i = 0; // Счётчик итераций цикла
 
@@ -80,17 +79,17 @@ int main() {
   // Основные вычисления
   while (i != n) {
     i += 1;
-    xi = arg_increment; // Начальное вычисление приращения аргумента
+    x = arg_increment; // Приращение аргумента
     cout.width(0);
     cout << fixed << setprecision(5) // Установка точности в 5 знаков после запятой
          << "| " << setw(6) 
          << left << i 
          << "| " << setw(8)
-         << left << xi 
+         << left << x 
          << "| " << setw(8)
-         << left << F(xi) 
+         << left << F(x) 
          << "| " << setw(9)
-         << left << G(xi) 
+         << left << G(x) 
          << " |" 
          << endl;
   cout << "-----------------------------------------" << endl;
