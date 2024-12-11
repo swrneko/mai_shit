@@ -41,20 +41,27 @@ int main() {
 
   /* Проверка файла на фозможность открытия */
   if (!SourceFile.is_open()) {
-    cout << "Неудалось прочитать файл" << endl;
+    cout << "Ошибка: Неудалось прочитать файл." << endl;
     SourceFile.close();
     exit(1);
   }
   
   /* Проверка на ошибку при чтении файла */
   if (SourceFile.fail()) {
-    cout << "Ошибка чтения файла" << endl;
+    cout << "Ошибка чтения файла." << endl;
+    SourceFile.close();
+    exit(1);
+  }
+
+  SourceFile >> N;
+  /* Проверка файла на пустоту */
+  if (SourceFile.eof()) {
+    cout << "Ошибка: Файл пуст." << endl;
     SourceFile.close();
     exit(1);
   }
 
   /* Запись данных из файла в переменные */
-  SourceFile >> N;
   SourceFile >> M;
 
   /*******************
