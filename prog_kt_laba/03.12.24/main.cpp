@@ -14,12 +14,15 @@
 * Last Revision : 10/12/24                                      *
 * Comment(s)    : Одномерные массивы.                           *
 ****************************************************************/
+// fix исправить вывод макс отриц элементов при всех отрицательных элементах
+//
 
 /****************************************
 * Подключение препроцессора и библиотек *
 ****************************************/
 #include <iostream>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 int main() {
@@ -34,42 +37,49 @@ int main() {
   float sum; // Сумма последних M элементов нового массива
   float max_value; // Значение наибольшего элемента из N последних
   float max_index; // Порядковый номер наибольшего элемента из N последних
+  float min_value; // Значение наибольшего элемента из N последних
+  float min_index; // Порядковый номер наибольшего элемента из N последних
+  const string FileName = "files/source.txt";
 
-  /* Инициализация файла */
-  ifstream SourceFile;
-  SourceFile.open("files/source.txt");
+  /* Инициализация файла */ ifstream SourceFile;
+  SourceFile.open(FileName);
 
   /* Проверка файла на фозможность открытия */
   if (!SourceFile.is_open()) {
-    cout << "Ошибка: Неудалось прочитать файл." << endl;
+    cout << "Ошибка: Неудалось прочитать файл: " << "'" << FileName << "'" << endl;
     SourceFile.close();
     exit(1);
   }
   
+  /* Проверка файла на пустоту */ 
+  SourceFile >> N; // Запись данных из файла в переменные
+  if (SourceFile.eof()) {
+    cout << "Ошибка: Файл " << "'" << FileName << "'" << " пуст." << endl;
+    SourceFile.close();
+    exit(1);
+  }
+
   /* Проверка на ошибку при чтении файла */
   if (SourceFile.fail()) {
-    cout << "Ошибка чтения файла." << endl;
+    cout << "Ошибка: В файле " << "'" << FileName << "'" << " значение N определено не верно (в значении имеются символы отличные от числа)." << endl;
     SourceFile.close();
     exit(1);
   }
 
-  SourceFile >> N;
-  /* Проверка файла на пустоту */
-  if (SourceFile.eof()) {
-    cout << "Ошибка: Файл пуст." << endl;
+  SourceFile >> M; // Запись данных из файла в переменные
+  if (SourceFile.fail()) {
+    cout << "Ошибка: В файле " << "'" << FileName << "'" << " значение M определено не верно (в значении имеются символы отличные от числа)." << endl;
     SourceFile.close();
     exit(1);
   }
 
-  /* Запись данных из файла в переменные */
-  SourceFile >> M;
 
   /*******************
   * Входной контроль *
   *******************/
 
   /* Проверка значение N на условие > 0*/
-  if (N <= 0) {
+  if (N < 0) {
     cout << "Значение N должно быть больше 0." << endl;
     SourceFile.close();
     exit(1);
@@ -83,7 +93,7 @@ int main() {
   }
 
   /* Проверка значение M на условие > 0*/
-  if (M <= 0) {
+  if (M < 0) {
     cout << "Значение M должно быть больше 0." << endl;
     SourceFile.close();
     exit(1);
@@ -108,6 +118,12 @@ int main() {
   /* Запись входных данных из файла в массив */
   for (int i = 0; i < SIZE; i++) {
     SourceFile >> IVECT[i];
+
+    if (SourceFile.fail()) {
+    cout << "Ошибка: В файле " << "'" << FileName << "'" << " одно или несколько значений элементов определены не верно (в значении имеются символы отличные от числа)." << endl;
+    SourceFile.close();
+    exit(1);
+    }
   }
 
   /* Печать начальной строчки вывода нового массива */
@@ -129,29 +145,35 @@ int main() {
     if (i == SIZE/2 - 1) {
       cout << NEWVEC[i] << endl;
     }
-
     /* Нахождение максимального элемента в массиве */
-    if (NEWVEC[i] > N) {
-
+    if (i >= N) {
       /* Задаём первый максимальный элемент массива */
-      if (max_value == N) { 
+      if (max_value == 0) { 
         max_value = NEWVEC[i];
         max_index = i;
+        min_value = NEWVEC[i];
+        min_index = i;
       }
-
       /* Находим максимальный элемент массива */
       if (NEWVEC[i] > max_value) {
         max_value = NEWVEC[i];
         max_index = i;
       }
+      if (NEWVEC[i] < min_value) {
+        min_value = NEWVEC[i];
+        min_index = i;
+      }
     }
-    
     /* Суммирование последних M эллементов нового массива */
     if (i > M) {
       sum += NEWVEC[i];
     }
   }
 
+  if (abs(min_value) > max_value) {
+    max_value = min_value;
+    max_index = min_index;
+  }
   /******************************
   * Вывод полученной информации *
   ******************************/
