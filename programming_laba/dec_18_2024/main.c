@@ -5,22 +5,25 @@
 
 char AUTHOR_SECOND_NAME[] = "Egorov";
 
-void creatorInfo() {
+void creatorInfo(void) {
   printf("%s",
-  "Laba 4 for 'Введение в проф деятельность\n'"
-  "Maintainer: Egorov Alexander, М3О-125БВ-24\n"
-  "\ta.k.a. swrneko\n"
-  "git url: https://github.com/swrneko/mai_shit\n"
-
-  "\" _                                          _   \"\n"
-  "| |                                        | |        \n"
-  "| |__  _   _   _____      ___ __ _ __   ___| | _____  \n"
-  "| '_ \\| | | | / __\\ \\ /\\ / / '__| '_ \\ / _ \\ |/ / _ \\ \n"
-  "| |_) | |_| | \\__ \\\\ V  V /| |  | | | |  __/   < (_) |\n"
-  "|_.__/ \\__, | |___/ \\_/\\_/ |_|  |_| |_\\___|_\\_\\___/ \n"
-  "        __/ |                                         \n"
-  "       |___/                                          \n");
+  "#########################################################\n"
+  "# Laba 4 for 'Введение в проф деятельность'             #\n"
+  "# Maintainer: Egorov Alexander, М3О-125БВ-24            #\n"
+  "#             ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓                          #\n"
+  "#              a.k.a. swrneko                           #\n"
+  "# git url: https://github.com/swrneko/mai_shit          #\n"
+  "#  _                                          _         #\n"      
+  "# | |                                        | |        #\n"
+  "# | |__  _   _   _____      ___ __ _ __   ___| | _____  #\n"
+  "# | '_ \\| | | | / __\\ \\ /\\ / / '__| '_ \\ / _ \\ |/ / _ \\ #\n"
+  "# | |_) | |_| | \\__ \\ V  V /| |  | | | |  __/   < (_) | #\n"
+  "# |_.__/ \\__, | |___/ \\_/\\_/ |_|  |_| |_|\\___|_|\\_\\___/ #\n"
+  "#         __/ |                                         #\n"
+  "#        |___/                                          #\n"
+  "#                                                       #\n");
 }
+
 /* Функция подсчта и вывода степени двойки */
 void countGradeOfTwo(void) {
   unsigned long long two_grade_demical = 1; // Значение степени двойки в 10 системе счисления
@@ -43,7 +46,7 @@ void countGradeOfTwo(void) {
 
   /* Печать шапки */
   printf("%s", "---------------------------------------------------------\n");
-  printf("%s %s %s %-28s %s %s %15s","|", "2^i", "|", "demical", "|", "hex", "|\n");
+  printf("%s %s %s %-28s %s %s %15s", "|", "2^i", "|", "demical", "|", "hex", "|\n");
   printf("%s", "---------------------------------------------------------\n");
 
   /* Цикл вывода данных степеней двойки*/
@@ -66,7 +69,7 @@ void countGradeOfTwo(void) {
   printf("%s", "---------------------------------------------------------\n");
 }
 
-/* Функция для вывод фамилии автора спустя каждый 1 000 000 000 */
+/* Функция для вывод фамилии автора спустя каждый 1 000 000 000 000 */
 void authorSecondName(void) {
   unsigned long long two_grade_demical = 1; // Значение степени двойки в степени
   unsigned long long two_grade_demical_old = 1; // Страрое значение двойки в степени (для вычисления разности) 
@@ -86,7 +89,7 @@ void authorSecondName(void) {
   printf("%s", "---------------------------------------------------------\n");
 
   /* Цикл для вывода фамилии автора при отличии значения на 1 000 000 000 */
-  for(int i=48,s; i != -1 ; i += 10) {
+  for(int i=48; i != -1 ; i += 10) {
 
     /* Расчёт квадрата двойки */
     two_grade_demical = pow(2, i);
@@ -96,7 +99,7 @@ void authorSecondName(void) {
       break;
     }
 
-    /* Просчёт разницы старого и нового значения степени двойки т.е. нахождение разницы в 1 000 000 000 с последующей печатью фамилии автора */
+    /* Просчёт разницы старого и нового значения степени двойки т.е. нахождение разницы в 1 000 000 000 000 с последующей печатью фамилии автора */
     if ((two_grade_demical - two_grade_demical_old) >= 1000000000000) {
       printf("%s %-19llu %-16s","|", two_grade_demical, "|");
       printf("%s %-15s %s\n", "|", AUTHOR_SECOND_NAME, "|");
@@ -165,7 +168,7 @@ void bitShift(void) {
   bitShiftAction("l", "r", two_grade_32_shift, AUTHOR_SECOND_NAME);
   printf("\n%s\n", "Bit shift for second varible.");
   bitShiftAction("r", "l", two_grade_32_shift, AUTHOR_SECOND_NAME);
-  }
+}
 
 
 int main() {
@@ -179,8 +182,10 @@ int main() {
   clock_time_start = clock();
   time(&real_time_start);
 
+  creatorInfo();
+
   countGradeOfTwo(); // Подсчёт и вывод степени двойки в 2-х системах счисления
-  authorSecondName(); // Вывод фамилии автора спустя каждый 1 000 000 000 
+  authorSecondName(); // Вывод фамилии автора спустя каждый 1 000 000 000 000
   bitShift(); // Расчёт и вывод побитового сдвига влево, затем вправо
 
   clock_time_end = clock(); 
@@ -189,5 +194,5 @@ int main() {
   clock_time_used = ((double) (clock_time_end - clock_time_start)) / CLOCKS_PER_SEC;
   real_time_used = difftime(real_time_end, real_time_start);
 
-  printf("\nTIME METRICKS:\n\tCPU time used: %0.4f\n\tReal time used:%0.4f\n", clock_time_used, real_time_used);
+  printf("\nTIME METRICKS:\n\tCPU time used: %0.4f sec.\n\tReal time used: %0.4f sec.\n", clock_time_used, real_time_used);
 }
