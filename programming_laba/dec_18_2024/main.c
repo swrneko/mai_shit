@@ -3,8 +3,24 @@
 #include <string.h> 
 #include <time.h>
 
-char AUTHOR_SECOND_NAME[] = "egorov";
+char AUTHOR_SECOND_NAME[] = "Egorov";
 
+void creatorInfo() {
+  printf("%s",
+  "Laba 4 for 'Введение в проф деятельность\n'"
+  "Maintainer: Egorov Alexander, М3О-125БВ-24\n"
+  "\ta.k.a. swrneko\n"
+  "git url: https://github.com/swrneko/mai_shit\n"
+
+  "\" _                                          _   \"\n"
+  "| |                                        | |        \n"
+  "| |__  _   _   _____      ___ __ _ __   ___| | _____  \n"
+  "| '_ \\| | | | / __\\ \\ /\\ / / '__| '_ \\ / _ \\ |/ / _ \\ \n"
+  "| |_) | |_| | \\__ \\\\ V  V /| |  | | | |  __/   < (_) |\n"
+  "|_.__/ \\__, | |___/ \\_/\\_/ |_|  |_| |_\\___|_\\_\\___/ \n"
+  "        __/ |                                         \n"
+  "       |___/                                          \n");
+}
 /* Функция подсчта и вывода степени двойки */
 void countGradeOfTwo(void) {
   unsigned long long two_grade_demical = 1; // Значение степени двойки в 10 системе счисления
@@ -83,7 +99,7 @@ void authorSecondName(void) {
     /* Просчёт разницы старого и нового значения степени двойки т.е. нахождение разницы в 1 000 000 000 с последующей печатью фамилии автора */
     if ((two_grade_demical - two_grade_demical_old) >= 1000000000000) {
       printf("%s %-19llu %-16s","|", two_grade_demical, "|");
-      printf("%s %-15s %s\n", "|", "Egorov", "|");
+      printf("%s %-15s %s\n", "|", AUTHOR_SECOND_NAME, "|");
       two_grade_demical_old = two_grade_demical;
     }
     else {
