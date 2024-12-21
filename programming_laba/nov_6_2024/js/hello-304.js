@@ -1,1 +1,1 @@
-console.log("Hello 304");
+console.log("Hello 304 from Egorov Alexander a.k.a. swrneko\n☆*:.｡.o(≧▽≦)o.｡.:*☆");
