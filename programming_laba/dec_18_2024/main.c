@@ -125,23 +125,23 @@ void authorSecondName(void) {
  */ 
 void bitShiftAction(char * dir_first, char * dir_second, int input_num, char * AUTHOR_SECOND_NAME) {
   int lenth_author_second_name = strlen(AUTHOR_SECOND_NAME); // Расчёт кол-ва символов в фамилии
-  double bit_shift_left; // Значение "input_num" после сдвига влево
-  double bit_shift_right; // Значение "input_num" после сдвига вправо
+  int bit_shift_left; // Значение "input_num" после сдвига влево
+  int bit_shift_right; // Значение "input_num" после сдвига вправо
 
   /* Побитовый сдвиг влево, затем вправо на кол-во символов в фамилии автора */
   if (strcmp(dir_first, "l") == 0 && strcmp(dir_second, "r") == 0) {
     bit_shift_left = input_num << lenth_author_second_name; // Побитовый сдвиг влево 
-    printf("\t%s %0.f\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
+    printf("\t%s %d\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
     bit_shift_right = input_num >> lenth_author_second_name;  // Побитовый сдвиг вправо
-    printf("\t%s %0.f\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
+    printf("\t%s %d\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
   }
 
   /* Побитовый сдвиг влево, затем влево на кол-во символов в фамилии автора */
   if (strcmp(dir_first, "r") == 0 && strcmp(dir_second, "l") == 0) {
     bit_shift_right = input_num >> lenth_author_second_name; // Побитовый сдвиг вправо
-    printf("\t%s %0.f\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
+    printf("\t%s %d\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
     bit_shift_left = input_num << lenth_author_second_name;  // Побитовый сдвиг влево
-    printf("\t%s %0.f\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
+    printf("\t%s %d\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
   }
 }
 
