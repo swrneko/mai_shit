@@ -73,6 +73,7 @@ void countGradeOfTwo(void) {
 void authorSecondName(void) {
   unsigned long long two_grade_demical = 1; // Значение степени двойки в степени
   unsigned long long two_grade_demical_old = 1; // Страрое значение двойки в степени (для вычисления разности) 
+  unsigned long long count_author_second_name = 0;
 
   /* Печать шапки */
   printf("\n%s",
@@ -89,29 +90,16 @@ void authorSecondName(void) {
   printf("%s", "---------------------------------------------------------\n");
 
   /* Цикл для вывода фамилии автора при отличии значения на 1 000 000 000 */
-  for(int i=48; i != -1 ; i += 10) {
-
-    /* Расчёт квадрата двойки */
-    two_grade_demical = pow(2, i);
-
-    /* Остановка цикла при выходе значения переменной за размер типа данных */
-    if (two_grade_demical == 0) {
-      break;
-    }
+  for(unsigned long long i=0; i < (pow(2,63)) ; i += 1000000000000) {
 
     /* Просчёт разницы старого и нового значения степени двойки т.е. нахождение разницы в 1 000 000 000 000 с последующей печатью фамилии автора */
-    if ((two_grade_demical - two_grade_demical_old) >= 1000000000000) {
-      printf("%s %-19llu %-16s","|", two_grade_demical, "|");
-      printf("%s %-15s %s\n", "|", AUTHOR_SECOND_NAME, "|");
-      two_grade_demical_old = two_grade_demical;
-    }
-    else {
-      printf("%llu\n", two_grade_demical);
+    if (i % 1000000000000 == 0) {
+      printf("%s\n", AUTHOR_SECOND_NAME);
+      count_author_second_name += 1;
     }
 
-    /* Обновление старго значения по концу цикла */
-    i+=1;
   }
+  printf("%s %llu\n", "Times author second name printed:", count_author_second_name);
   /* Вывод конеца */
   printf("%s", "---------------------------------------------------------\n");
 }
@@ -194,5 +182,5 @@ int main() {
   clock_time_used = ((double) (clock_time_end - clock_time_start)) / CLOCKS_PER_SEC;
   real_time_used = difftime(real_time_end, real_time_start);
 
-  printf("\nTIME METRICKS:\n\tCPU time used: %0.4f sec.\n\tReal time used: %0.4f sec.\n", clock_time_used, real_time_used);
+  printf("\nTIME METRICKS:\n\tCPU time used: %0.4f s\n\tReal time used: %0.4f s\n", clock_time_used, real_time_used);
 }

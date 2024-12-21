@@ -112,11 +112,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/swrneko/VVEDENIE_V_PROF/nov_6_2024/f#/helloapp/helloapp.fsproj",
+      "projectUniqueName": "/home/swrneko/Projects/mai_shit/programming_laba/nov_6_2024/f#/helloapp/helloapp.fsproj",
       "projectName": "helloapp",
-      "projectPath": "/home/swrneko/VVEDENIE_V_PROF/nov_6_2024/f#/helloapp/helloapp.fsproj",
+      "projectPath": "/home/swrneko/Projects/mai_shit/programming_laba/nov_6_2024/f#/helloapp/helloapp.fsproj",
       "packagesPath": "/home/swrneko/.nuget/packages/",
-      "outputPath": "/home/swrneko/VVEDENIE_V_PROF/nov_6_2024/f#/helloapp/obj/",
+      "outputPath": "/home/swrneko/Projects/mai_shit/programming_laba/nov_6_2024/f#/helloapp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/swrneko/.nuget/NuGet/NuGet.Config"
