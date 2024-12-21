@@ -1,2 +1,1 @@
-﻿// For more information see https://aka.ms/fsharp-console-apps
-printfn "Hello 304"
+﻿printfn "Hello 304 from Egorov Alexander a.k.a. swrneko\n☆*:.｡.o(≧▽≦)o.｡.:*☆"
