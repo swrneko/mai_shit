@@ -66,7 +66,7 @@ int main() {
   printf("\n%s\n", "Sdvig 2");
   sdvig_right = stepen2 >> lenth_author_second_name; // Сдвиг вправо
   printf("\t%s %d\n", "right:", sdvig_right); 
-  sdvig_left = ((int) sdvig_right) << lenth_author_second_name; // Сдвиг влево
+  sdvig_left = sdvig_right << lenth_author_second_name; // Сдвиг влево
   printf("\t%s %d\n", "left:", sdvig_left); 
 
   t1_end = clock(); // Конец таймера процессора

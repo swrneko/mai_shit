@@ -132,7 +132,7 @@ void bitShiftAction(char * dir_first, char * dir_second, int input_num, char * A
   if (strcmp(dir_first, "l") == 0 && strcmp(dir_second, "r") == 0) {
     bit_shift_left = input_num << lenth_author_second_name; // Побитовый сдвиг влево 
     printf("\t%s %d\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
-    bit_shift_right = input_num >> lenth_author_second_name;  // Побитовый сдвиг вправо
+    bit_shift_right = bit_shift_left >> lenth_author_second_name;  // Побитовый сдвиг вправо
     printf("\t%s %d\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
   }
 
@@ -140,7 +140,7 @@ void bitShiftAction(char * dir_first, char * dir_second, int input_num, char * A
   if (strcmp(dir_first, "r") == 0 && strcmp(dir_second, "l") == 0) {
     bit_shift_right = input_num >> lenth_author_second_name; // Побитовый сдвиг вправо
     printf("\t%s %d\n", "Bit shift right:", bit_shift_right); // Вывод побитового сдвига вправо
-    bit_shift_left = input_num << lenth_author_second_name;  // Побитовый сдвиг влево
+    bit_shift_left = bit_shift_right << lenth_author_second_name;  // Побитовый сдвиг влево
     printf("\t%s %d\n", "Bit shift left:", bit_shift_left); // Вывод побитового сдвига влево
   }
 }
