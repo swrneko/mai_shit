@@ -103,34 +103,37 @@ int main() {
             double fx1 = pow(x1, 3) - 2 * pow(x1, 2) - 4 * x1 + 7; // Значение функции по x1
             if (fabs(fx1 - fx0) < 1e-12) break; // предотвращение деления на ноль
             double x2 = x1 - fx1 * (x1 - x0) / (fx1 - fx0); // Нахождения x2
-            /*  */
+            /* Проверка на достижение необходимой точности */
             if (fabs(pow(x2, 3) - 2 * pow(x2, 2) - 4 * x2 + 7) < tol) { 
                 root_secant = x2;
                 iter_secant = j + 1;
                 break;
             }
-            x0 = x1;
-            x1 = x2;
+            x0 = x1; // Перезапись x0
+            x1 = x2; // Перезапись x1
         }
 
         // Метод Ньютона
-        double x_newton = (a + b) / 2;
-        int iter_newton = 0;
+        double x_newton = (a + b) / 2; // Нахождение начального значения x по методу ньютона
+        int iter_newton = 0; // Переменная подсчёта количества итераций по методу ньютона
         double root_newton = NAN;
 
+        /* Подсчёт значения функции по методу ньютона */
         for (int j = 0; j < max_iter; ++j) {
-            double fx0 = pow(x_newton, 3) - 2 * pow(x_newton, 2) - 4 * x_newton + 7;
-            double dfx0 = 3 * pow(x_newton, 2) - 4 * x_newton - 4;
+            double fx0 = pow(x_newton, 3) - 2 * pow(x_newton, 2) - 4 * x_newton + 7; // Подсчёт значения ф-ции от x0 по методу ньютона
+            double dfx0 = 3 * pow(x_newton, 2) - 4 * x_newton - 4; // Подсчёт значения дифференциала ф-ции от x0 по методу ньютона
             if (fabs(dfx0) < 1e-12) break; // предотвращение деления на ноль
-            double x1 = x_newton - fx0 / dfx0;
+            double x1 = x_newton - fx0 / dfx0; // Нахождение x1
+            /* Проверка на достижение необходимой точности */
             if (fabs(pow(x1, 3) - 2 * pow(x1, 2) - 4 * x1 + 7) < tol) {
                 root_newton = x1;
                 iter_newton = j + 1;
                 break;
             }
-            x_newton = x1;
+            x_newton = x1; // Перезапись x
         }
 
+        /* Вывод полученных значений */
         cout << "  Метод хорд: корень = " << root_secant << ", итерации = " << iter_secant << "\n";
         cout << "  Метод касательных: корень = " << root_newton << ", итерации = " << iter_newton << "\n";
     }
