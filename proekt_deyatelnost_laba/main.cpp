@@ -54,6 +54,11 @@ int main() {
     double tol;
     cout << "Введите точность: ";
     cin >> tol;
+
+    if(tol > 1) {
+
+    }
+    
     for (int i = 0; i < interval_count; ++i) {
         double a = intervals[i][0];
         double b = intervals[i][1];
