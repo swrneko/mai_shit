@@ -71,7 +71,7 @@ int main() {
     }
 
     /* Вывод интервалов смены знака */
-    cout << "Интервалы, где функция меняет знак:" << endl;
+    cout << endl << "Интервалы, где функция меняет знак:" << endl;
     for (int i = 0; i < interval_count; ++i) {
         cout << "[" << intervals[i][0] << ", " << intervals[i][1] << "]" << endl;
     }
