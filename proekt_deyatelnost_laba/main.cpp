@@ -56,9 +56,18 @@ int main() {
     cin >> tol;
 
     if(tol > 1) {
-
+        cout << "Ошибка: Точность должна быть < 1.\n";
+        exit(1);
     }
-    
+    if(tol < 0) {
+        cout << "Ошибка: Точность должна быть > 0.\n";
+        exit(1);
+    } 
+    if(int(tol) == false) {
+        cout << "Ошибка: Введённое значение не является числом.\n";
+        exit(1);
+    } 
+
     for (int i = 0; i < interval_count; ++i) {
         double a = intervals[i][0];
         double b = intervals[i][1];
