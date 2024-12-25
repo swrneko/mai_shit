@@ -4,8 +4,7 @@
 * Project Type  : GNU/Linux Console Application                 *
 * Project Name  : proj_3                                        *
 * File Name     : main.cpp                                      *
-* Language      : C/C++                                         *
-* Programmer(s) : Егоров А.В (swrneko), Федоров А.И.            *
+* Language      : C/C++                                         * Programmer(s) : Егоров А.В (swrneko), Федоров А.И.            *
 * Modifyed By   : Егоров А.В (swrneko)                          *
 * Edited by     : Neovim, Visual Studio                         *
 * OS            : Arch Linux, Windows 11                        *
@@ -88,7 +87,7 @@ int main() {
   
   /* Проверка значение N на условие < SIZE/2 */
   if (N > SIZE/2.0) {
-    cout << "Значение N должно быть меньше 12." << endl;
+    cout << "Значение N должно быть меньше или равно 12." << endl;
     SourceFile.close();
     exit(1);
   }
@@ -102,7 +101,7 @@ int main() {
 
   /* Проверка значение M на условие < SIZE/2*/
   if (M > SIZE/2.0) {
-    cout << "Значение M должно быть меньше 12." << endl;
+    cout << "Значение N должно быть меньше или равно 12." << endl;
     SourceFile.close();
     exit(1);
   }
