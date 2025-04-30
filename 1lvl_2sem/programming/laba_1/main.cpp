@@ -30,6 +30,9 @@ const int SIZE = 100;
 =======
 void similarWordsInTwoLines(char* str0, char* str1);
 bool findSimilarWords(char* word0, char* word1); // Сравнение двух слов
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 // Разбивает строку на слова
@@ -215,5 +218,8 @@ bool findSimilarWords(char* word0, char* word1) {
     i++;
   }
   return true;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
