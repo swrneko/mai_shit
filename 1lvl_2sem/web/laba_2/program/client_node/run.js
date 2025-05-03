@@ -50,11 +50,17 @@ client.connect(PORT, HOST, () => {
     log(`Успешное подключение к серверу: ${HOST}:${PORT}`);
 
     setInterval(() => {
-        try {
-            client.write(MESSAGE);
-            log(`Отправлено сообщение: '${MESSAGE}'`);
-        } catch (e) {
-            log(`Ошибка при отправке данных: ${e.message}`, "ERROR");
+        if (!client.destroyed) {
+            try {
+                client.write(MESSAGE);
+                log(`Отправлено сообщение: '${MESSAGE}'`);
+            } catch (e) {
+                log(`Ошибка при отправке данных: ${e.message}`, "ERROR");
+                client.destroy();
+            }
+        }
+        else {
+            log("Отключен от сервера.")
             client.destroy();
         }
     }, INTERVAL);
