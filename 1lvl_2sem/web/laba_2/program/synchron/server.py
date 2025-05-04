@@ -77,7 +77,7 @@ def main():
             continue
 
     # Закрытие соединения
-    conn.send(("Клиент отключен от сервера.").encode())
+    # conn.send(("Клиент отключен от сервера.").encode())
     conn.close()
 
     logger.info(f"Клиент отключен от сервера: {addr}")
