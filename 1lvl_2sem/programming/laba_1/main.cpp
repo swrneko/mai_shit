@@ -23,17 +23,9 @@ using namespace std;
 *************************/
 const int SIZE = 100;
 
-<<<<<<< Updated upstream
 /********************
 * Прототипы функций *
 ********************/
-=======
-void similarWordsInTwoLines(char* str0, char* str1);
-bool findSimilarWords(char* word0, char* word1); // Сравнение двух слов
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 // Разбивает строку на слова
 // Параметры:
@@ -125,7 +117,6 @@ int main() {
     return 0;
 }
 
-<<<<<<< Updated upstream
 /**********
 * Функции *
 **********/
@@ -178,48 +169,5 @@ int countChar(char str[], char c) {
             count++;
     }
     return count;
-=======
-void similarWordsInTwoLines(char* str0, char* str1) {
-  char word0[SIZE];
-  char word1[SIZE];
-  int k0 = 0;
-
-  // Проходим по словам первой строки до конца
-  for(int i=0; str0[i] != '\0'; i++) {
-
-    if(str0[i] != ' '){
-      word0[k0] = str0[i];
-      cout << word0[k0] << "\t";
-      k0++;
-    }
-
-    else{
-      k0 = 0;
-
-    }
-  }
-  
-  if(findSimilarWords(str0, str1)) {
-    cout << "Строки совпадают";
-  }
-  else {
-    cout << "Совпадений не найдено";
-  }
 }
 
-
-bool findSimilarWords(char* word0, char* word1) {
-  int i = 0;
-
-  while(word0[i] != '\0' && word1[i] != '\0') {
-    if(word0[i] != word1[i]) {
-      return false; 
-    }
-    i++;
-  }
-  return true;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-}
