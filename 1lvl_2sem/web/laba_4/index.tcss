@@ -1,0 +1,108 @@
+Screen {
+    align: center middle;
+    layout: vertical;
+}
+
+#login_container {
+    align: center middle;   /* Центрируем контейнер по горизонтали и вертикали */
+    height: 100%;            /* Высота на весь экран */
+    width: 100%;             /* Ширина на весь экран */
+}
+#login_box {
+    width: 60%;             /* Блок LoginBox будет занимать 60% ширины */
+    align-horizontal: center;  /* Центрируем блок по горизонтали */
+    content-align: center middle;  /* Центрируем содержимое внутри LoginBox */
+    padding: 2;             /* Отступы внутри блока */
+    border: round $primary;    /* Добавим белую границу */ }
+
+Label, Static {
+    width: 100%;            /* Каждый элемент будет занимать 100% ширины родительского блока */
+    margin-bottom: 1;       /* Отступ снизу */
+    text-align: center;     /* Текст по центру */
+}
+
+#input_container {
+    align: center middle;
+    width: 100%;
+    height: auto;
+}
+
+Input {
+    width: 80%;            /* Каждый элемент будет занимать 100% ширины родительского блока */
+    margin-bottom: 1;       /* Отступ снизу */
+    text-align: center;     /* Текст по центру */
+}
+
+#button_container {
+    align: center middle;
+    width: 100%;
+    height: auto;
+}
+
+Button {
+    width: 35%;
+    content-align: center middle;
+}
+
+#mail_list {
+    width: 100%;             
+    margin-left: 0;
+    align-horizontal: left;
+    background: $background;
+}
+
+#mail_container {
+    content-align: left top;
+}
+
+ListItem Label {
+    text-align: left;
+    width: 100%;
+    padding-left: 1;
+}
+
+.load_more_container {
+    align: center middle;
+    width: 100%;
+    height: auto;
+}
+
+#show_more_button {
+    width: 25%;
+    content-align: center middle;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.email_row {
+    layout: horizontal;
+    width: 100%;
+    height: 2w;
+    padding: 1 1;
+}
+
+.header_row {
+    layout: horizontal;
+    width: 100%;
+    height: 1w;
+    margin: 1 2 1 2 ;
+}
+
+.sender, .header_sender {
+    width: 25%;
+    text-align: left;
+}
+
+.subject, .header_subject{
+    width: 55%;
+    text-align: left;
+}
+
+.date, .header_date {
+    width: 20%;
+    text-align: right;
+}
+
