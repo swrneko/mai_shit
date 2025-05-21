@@ -21,6 +21,10 @@ int processMatrix(int matrix[][1000], int size, int* sums, int& minSum);
 // matrixName — название матрицы (для вывода), sums — массив сумм, count — количество, minSum — минимум.
 void printResults(const char* matrixName, int* sums, int count, int minSum);
 
+// Функция для вывода матрицы на экран.
+// matrix — двумерный массив, size — размерность, matrixName — название матрицы.
+void printMatrix(const char* matrixName, int matrix[][1000], int size);
+
 int main() {
     // Массив имён файлов с матрицами (два файла)
     const char* files[2] = {"matrix1.txt", "matrix2.txt"};
@@ -49,6 +53,9 @@ int main() {
             delete[] sums;
             continue;
         }
+
+        // Выводим исходную матрицу перед обработкой
+        printMatrix(names[idx], matrix, size);
 
         // minSum — для хранения минимальной из найденных сумм
         int minSum;
@@ -153,4 +160,16 @@ void printResults(const char* matrixName, int* sums, int count, int minSum) {
     cout << endl;
     // Выводим минимальную из этих сумм
     cout << matrixName << " — минимальная из этих сумм: " << minSum << endl;
+}
+
+// Функция для вывода матрицы на экран
+void printMatrix(const char* matrixName, int matrix[][1000], int size) {
+    cout << matrixName << " (исходная матрица):" << endl;
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            cout << matrix[i][j] << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
