@@ -1,104 +1,156 @@
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 
-// Прототипы функций
+// Получение размера квадратной матрицы из файла.
+// Открывает файл, считывает первую строку (размер матрицы).
+// Возвращает размер, если успешно, иначе -1.
 int getMatrixSize(const char* filename);
-void readMatrixFromFile(const char* filename, int** matrix, int size);
-int processMatrix(int** matrix, int size, int* sums, int& minSum);
 
-// Получение размера квадратной матрицы из файла (размер — первая строка файла)
+// Чтение квадратной матрицы из файла и заполнение двумерного массива.
+// filename — имя файла, matrix — двумерный массив, size — размерность матрицы.
+// Возвращает true при успешном чтении, иначе false.
+bool readMatrixFromFile(const char* filename, int matrix[][1000], int size);
+
+// Обработка матрицы: поиск сумм в строках под главной диагональю без отрицательных элементов.
+// matrix — матрица, size — размер, sums — массив для хранения сумм, minSum — минимальная из сумм.
+// Возвращает количество подходящих строк.
+int processMatrix(int matrix[][1000], int size, int* sums, int& minSum);
+
+// Функция для вывода результатов анализа одной матрицы на экран.
+// matrixName — название матрицы (для вывода), sums — массив сумм, count — количество, minSum — минимум.
+void printResults(const char* matrixName, int* sums, int count, int minSum);
+
+int main() {
+    // Массив имён файлов с матрицами (два файла)
+    const char* files[2] = {"matrix1.txt", "matrix2.txt"};
+    // Массив имён для вывода на экран
+    const char* names[2] = {"Первая матрица", "Вторая матрица"};
+
+    // Последовательно обрабатываем оба файла с матрицами
+    for (int idx = 0; idx < 2; ++idx) {
+        cout << "==== " << names[idx] << " ====" << endl;
+
+        // Получаем размерность матрицы из файла
+        int size = getMatrixSize(files[idx]);
+        if (size <= 0 || size > 1000) {
+            cerr << "Ошибка: некорректный размер матрицы в файле " << files[idx] << endl;
+            continue;
+        }
+
+        // Объявляем статический двумерный массив (до 1000x1000)
+        int matrix[1000][1000];
+        // Динамически выделяем память под массив найденных сумм (не больше size-1, но для простоты size)
+        int* sums = new int[size];
+
+        // Читаем матрицу из файла
+        if (!readMatrixFromFile(files[idx], matrix, size)) {
+            cerr << "Ошибка чтения матрицы" << endl;
+            delete[] sums;
+            continue;
+        }
+
+        // minSum — для хранения минимальной из найденных сумм
+        int minSum;
+        // count — количество подходящих строк (по условию задачи)
+        int count = processMatrix(matrix, size, sums, minSum);
+
+        // Выводим результаты на экран
+        printResults(names[idx], sums, count, minSum);
+
+        // Освобождаем память под массив найденных сумм
+        delete[] sums;
+        cout << endl;
+    }
+    return 0;
+}
+
 int getMatrixSize(const char* filename) {
-    ifstream fin(filename);  // Открываем файл для чтения
-    int size;
-    fin >> size;             // Считываем размер матрицы
-    fin.close();             // Закрываем файл
+    // Открываем файл для чтения
+    ifstream fin(filename);
+    if (!fin.is_open()) {
+        cerr << "Ошибка открытия файла: " << filename << endl;
+        return -1;
+    }
+    int size = -1;
+    // Считываем размер матрицы (первое число в файле)
+    fin >> size;
+    // Проверка на ошибку чтения и корректность размера
+    if (fin.fail() || size <= 0) {
+        cerr << "Ошибка чтения размера матрицы или некорректный размер." << endl;
+        fin.close();
+        return -1;
+    }
+    fin.close();
     return size;
 }
 
-// Чтение квадратной матрицы из файла и заполнение двумерного массива
-void readMatrixFromFile(const char* filename, int** matrix, int size) {
-    ifstream fin(filename);  // Открываем файл для чтения
+bool readMatrixFromFile(const char* filename, int matrix[][1000], int size) {
+    // Открываем файл для чтения
+    ifstream fin(filename);
+    if (!fin.is_open()) {
+        cerr << "Ошибка открытия файла: " << filename << endl;
+        return false;
+    }
     int tmp;
-    fin >> tmp;              // Пропускаем размер матрицы (он уже считан ранее)
-    // Построчно заполняем двумерный массив из файла
+    // Пропускаем размер матрицы
+    fin >> tmp;
+    // Читаем элементы матрицы по строкам
     for (int i = 0; i < size; ++i)
-        for (int j = 0; j < size; ++j)
-            fin >> matrix[i][j];
-    fin.close();             // Закрываем файл
+        for (int j = 0; j < size; ++j) {
+            if (!(fin >> matrix[i][j])) {
+                cerr << "Ошибка чтения элемента матрицы [" << i << "][" << j << "]." << endl;
+                fin.close();
+                return false;
+            }
+        }
+    fin.close();
+    return true;
 }
 
-// Обработка матрицы: поиск сумм в строках под главной диагональю без отрицательных элементов
-// sums — массив для сохранения найденных сумм, minSum — минимальная из сумм
-// Функция возвращает количество найденных сумм
-int processMatrix(int** matrix, int size, int* sums, int& minSum) {
-    minSum = 1000000000; // Задаем заведомо большое значение для поиска минимума
-    int count = 0;       // Количество подходящих строк
-    // Проходим по всем строкам под главной диагональю (i > 0)
+int processMatrix(int matrix[][1000], int size, int* sums, int& minSum) {
+    // minSum — минимальная из найденных сумм, если нет строк — останется 0
+    minSum = 0;
+    // foundAny — количество строк, удовлетворяющих условию
+    int foundAny = 0;
+    // Проходим по всем строкам, находящимся ниже главной диагонали (i > 0)
     for (int i = 1; i < size; ++i) {
         bool hasNegative = false; // Флаг наличия отрицательного элемента в строке
         // Проверяем только элементы под главной диагональю (j < i)
         for (int j = 0; j < i; ++j) {
             if (matrix[i][j] < 0) {
-                hasNegative = true; // Если встретился отрицательный элемент — строка не подходит
-                break;
+                hasNegative = true;
+                break; // Если встречен отрицательный элемент — строка не подходит
             }
         }
-        // Если в строке нет отрицательных элементов — считаем сумму элементов под диагональю
+        // Если в строке нет отрицательных элементов — считаем сумму и сохраняем
         if (!hasNegative) {
             int sum = 0;
             for (int j = 0; j < i; ++j)
                 sum += matrix[i][j];
-            sums[count++] = sum;       // Сохраняем сумму в массив
-            if (sum < minSum)          // Обновляем минимум, если нужно
-                minSum = sum;
+            sums[foundAny++] = sum;
+            // Первый подходящий элемент — сразу пишем в minSum
+            if (foundAny == 1) minSum = sum;
+            // Для последующих — ищем минимум
+            else if (sum < minSum) minSum = sum;
         }
     }
-    if (count == 0)
-        minSum = 0; // Если подходящих строк не найдено — минимум 0
-    return count;   // Возвращаем количество найденных сумм
+    // Если ни одной подходящей строки не найдено, minSum остаётся 0
+    return foundAny;
 }
 
-int main() {
-    // Определяем размерность матрицы, считав первую строку файла
-    int size = getMatrixSize("input.txt");
-
-    // Динамически выделяем память под двумерный массив для матрицы
-    int** matrix = new int*[size];
-    for (int i = 0; i < size; ++i)
-        matrix[i] = new int[size];
-
-    // Динамически выделяем память под массив для найденных сумм (максимум size-1)
-    int* sums = new int[size];
-    int minSum; // Для хранения минимальной суммы
-
-    // Читаем матрицу из файла
-    readMatrixFromFile("input.txt", matrix, size);
-
-    // Обрабатываем матрицу, ищем суммы и минимум
-    int count = processMatrix(matrix, size, sums, minSum);
-
-    // Вывод всех найденных сумм по условию
-    cout << "Суммы элементов по условию: ";
+void printResults(const char* matrixName, int* sums, int count, int minSum) {
+    // Выводим все найденные суммы по условию задачи
+    cout << matrixName << " — суммы элементов по условию: ";
     if (count == 0) {
-        cout << "Нет подходящих строк"; // Если не найдено ни одной подходящей строки
+        cout << "Нет подходящих строк";
     } else {
         for (int i = 0; i < count; ++i) {
             cout << sums[i];
-            if (i + 1 != count) cout << ", "; // Разделяем суммы запятыми
+            if (i + 1 != count) cout << ", ";
         }
     }
     cout << endl;
-
-    // Вывод минимальной из найденных сумм
-    cout << "Минимальная из этих сумм: " << minSum << endl;
-
-    // Освобождаем память для каждой строки двумерного массива
-    for (int i = 0; i < size; ++i)
-        delete[] matrix[i];
-    delete[] matrix; // Освобождаем память под массив указателей
-    delete[] sums;   // Освобождаем память под массив сумм
-
-    return 0;
+    // Выводим минимальную из этих сумм
+    cout << matrixName << " — минимальная из этих сумм: " << minSum << endl;
 }
