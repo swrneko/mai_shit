@@ -10,7 +10,7 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Имя файла для хранения сообщений
-MESSAGES_FILE = "laba_6/messages.json"
+MESSAGES_FILE = "messages.json"
 
 # Загрузка сообщений из файла
 def load_messages():

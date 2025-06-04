@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # Имя файла для хранения сообщений
-MESSAGES_FILE = "laba_6/messages.json"
+MESSAGES_FILE = "messages.json"
 
 def load_messages():
     """Загружает сообщения из JSON-файла, если он существует."""
