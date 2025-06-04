@@ -15,208 +15,202 @@ const int LINE_SIZE = 64;      // максимальная длина строк
 
 // Структура для хранения информации о рейсе
 struct Flight {
-    char mark[MARK_SIZE];            // Марка самолёта, например "ТУ-154М"
-    char boardNumber[BOARD_NUM_SIZE];// Бортовой номер, например "Б-3726"
+    char mark[MARK_SIZE];            // Марка самолёта, например "TU-154M"
+    char boardNumber[BOARD_NUM_SIZE];// Бортовой номер, например "B-3726"
     int landingHour;                 // Часы посадки (0-23)
     int landingMinute;               // Минуты посадки (0-59)
-    char aerodrome[AERO_SIZE];       // Аэродром посадки, например "АП2"
+    char aerodrome[AERO_SIZE];       // Аэродром посадки, например "AP2"
 };
 
+// Индексная структура для сортировки и доступа по индексу
+struct FlightIndex {
+    int idx;    // Индекс рейса в массиве Flight
+    int time;   // Время посадки в минутах (для сортировки)
+};
+
+// Собственная реализация функции определения длины строки (аналог strlen)
+int strLength(const char* s) {
+    int len = 0;
+    while (s[len] != '\0') {
+        len++;
+    }
+    return len;
+}
+
 // Копирует строку src в dest, не превышая maxLen (включая завершающий нуль).
-// dest — массив символов, куда будет скопирована строка.
-// src — исходная строка для копирования.
-// maxLen — максимальный размер буфера dest, включая завершающий нуль.
-void copyStr(char* dest, const char* src, int maxLen);
-
-// Разбирает строку времени ("ЧЧ:ММ" или "Ч:ММ") на часы и минуты.
-// str — строка времени для разбора (например, "09:45").
-// hour — переменная для записи разобранных часов (по ссылке).
-// minute — переменная для записи разобранных минут (по ссылке).
-// Возвращает true, если разбор успешен и значения валидны; иначе false.
-bool parseTime(const char* str, int& hour, int& minute);
-
-// Возвращает время посадки в минутах от полуночи для данного рейса.
-// f — структура Flight с данными рейса.
-// Возвращает количество минут от полуночи.
-int landingTimeToMinutes(const Flight& f);
-
-// Проверяет корректность данных рейса.
-// f — структура Flight для проверки.
-// Возвращает true, если все поля валидны; иначе false.
-bool isValidFlight(const Flight& f);
-
-// Сравнивает две строки на равенство.
-// a — первая строка (массив символов).
-// b — вторая строка (массив символов).
-// Возвращает true, если строки идентичны (по символам); иначе false.
-bool areStringsEqual(const char* a, const char* b);
-
-// Считывает данные рейсов из файла filename в массив flights (максимум maxRecords штук).
-// filename — имя файла для чтения данных (например, "data.txt").
-// flights — массив структур Flight, куда будут записаны считанные данные.
-// maxRecords — максимальное количество записей для чтения (размер массива flights).
-// Возвращает количество успешно считанных рейсов.
-int readFlights(const char* filename, Flight flights[], int maxRecords);
-
-// Выводит таблицу рейсов (n штук из массива flights).
-// flights — массив структур Flight для вывода.
-// n — количество рейсов для вывода.
-void printFlights(const Flight flights[], int n);
-
-// Сортирует индексы рейсов в массиве idx по времени посадки (пузырьковая сортировка).
-// flights — массив структур Flight для сравнения времени посадки.
-// idx — массив индексов, который будет отсортирован по времени посадки.
-// n — количество рейсов/индексов для сортировки.
-void indexBubbleSort(const Flight flights[], int idx[], int n);
-
-// Выводит рейсы, приземлившиеся на targetAerodrome, в порядке времени посадки.
-// flights — массив структур Flight.
-// idx — массив отсортированных индексов рейсов.
-// n — количество рейсов.
-// targetAerodrome — название аэродрома, для которого нужно вывести рейсы.
-void printFlightsByAerodrome(const Flight flights[], const int idx[], int n, const char* targetAerodrome);
-
-// Точка входа в программу.
-// argc — количество аргументов командной строки.
-// argv — массив строк-аргументов командной строки.
-int main(int argc, char* argv[]);
-
-
-
-// Реализация функции копирования строки
 void copyStr(char* dest, const char* src, int maxLen) {
     int i = 0;
-    // Копируем символы по одному, пока не закончится исходная строка или не достигнут лимит
     while (src[i] != '\0' && i < maxLen - 1) {
         dest[i] = src[i];
         i++;
     }
-    // Добавляем завершающий нуль
     dest[i] = '\0';
 }
 
-// Реализация функции разбора времени из строки формата "ЧЧ:ММ"
+// Разбирает строку времени ("ЧЧ:ММ" или "Ч:ММ") на часы и минуты.
 bool parseTime(const char* str, int& hour, int& minute) {
     hour = 0;
     minute = 0;
     int i = 0;
-    // Считываем часы
+    if (!(str[i] >= '0' && str[i] <= '9')) return false;
     while (str[i] >= '0' && str[i] <= '9') {
         hour = hour * 10 + (str[i] - '0');
         ++i;
     }
-    // Проверяем наличие разделителя ':'
     if (str[i] != ':') return false;
     ++i;
-    // Считываем минуты
     if (!(str[i] >= '0' && str[i] <= '9')) return false;
     while (str[i] >= '0' && str[i] <= '9') {
         minute = minute * 10 + (str[i] - '0');
         ++i;
     }
-    // Проверяем, что после минут нет лишних символов
     if (str[i] != '\0') return false;
-    // Проверка диапазонов
     if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return false;
     return true;
 }
 
-// Преобразует время посадки из часов и минут в общее количество минут от полуночи
+// Возвращает время посадки в минутах от полуночи
 int landingTimeToMinutes(const Flight& f) {
     return f.landingHour * 60 + f.landingMinute;
 }
 
-// Проверяет валидность данных о рейсе
-bool isValidFlight(const Flight& f) {
-    // Проверка, что бортовой номер не пустой
-    if (f.boardNumber[0] == '\0') return false;
-    // Проверка диапазонов времени
-    if (f.landingHour < 0 || f.landingHour > 23 || f.landingMinute < 0 || f.landingMinute > 59) return false;
-    // Проверка, что аэродром не пустой
-    if (f.aerodrome[0] == '\0') return false;
+// Проверяет, что символ - латинская буква или цифра
+bool isLetterOrDigit(char c) {
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) return true;
+    if (c >= '0' && c <= '9') return true;
+    return false;
+}
+
+// Проверяет, что строка состоит только из латинских букв и цифр
+bool isAlphaNumStr(const char* s) {
+    int i = 0;
+    while (s[i] != '\0') {
+        if (!isLetterOrDigit(s[i])) return false;
+        i++;
+    }
+    return i > 0;
+}
+
+// Проверяет, что строка состоит из латинских букв, цифр и дефиса (должен быть хотя бы один дефис)
+bool isAlphaNumDashStr(const char* s) {
+    int i = 0;
+    bool hasDash = false;
+    while (s[i] != '\0') {
+        if (s[i] == '-') hasDash = true;
+        else if (!isLetterOrDigit(s[i])) return false;
+        i++;
+    }
+    return i > 0 && hasDash;
+}
+
+// Проверяет формат бортового номера: одна латинская буква, дефис, 4 цифры
+bool isBoardNumberValid(const char* s) {
+    if (!((s[0] >= 'A' && s[0] <= 'Z') || (s[0] >= 'a' && s[0] <= 'z'))) return false;
+    if (s[1] != '-') return false;
+    int i = 2, cnt = 0;
+    while (s[i] >= '0' && s[i] <= '9') { ++i; ++cnt; }
+    if (cnt != 4) return false;
+    if (s[i] != '\0') return false;
     return true;
 }
 
-// Сравнивает две строки на идентичность посимвольно
+// Проверяет, что аэродром — только AP1, AP2 или AP3
+bool isAerodromeValid(const char* s) {
+    return (
+        (s[0] == 'A' && s[1] == 'P' && s[2] == '1' && s[3] == '\0') ||
+        (s[0] == 'A' && s[1] == 'P' && s[2] == '2' && s[3] == '\0') ||
+        (s[0] == 'A' && s[1] == 'P' && s[2] == '3' && s[3] == '\0')
+    );
+}
+
+// Главная функция проверки полей структуры Flight (кроме специфических проверок аэродрома)
+bool isValidFlightData(const Flight& f) {
+    if (!isBoardNumberValid(f.boardNumber)) return false;
+    if (!isAlphaNumDashStr(f.mark)) return false;
+    if (f.landingHour < 0 || f.landingHour > 23) return false;
+    if (f.landingMinute < 0 || f.landingMinute > 59) return false;
+    return true;
+}
+
+// Сравнивает две строки на полное совпадение
 bool areStringsEqual(const char* a, const char* b) {
     int i = 0;
-    // Сравниваем символы по одному
     while (a[i] && b[i]) {
         if (a[i] != b[i]) return false;
         ++i;
     }
-    // Строки равны, если закончились одновременно
     return a[i] == b[i];
 }
 
-// Считывает данные о рейсах из текстового файла
+// Чтение данных о рейсах из текстового файла
 int readFlights(const char* filename, Flight flights[], int maxRecords) {
-    ifstream fin(filename); // Открываем файл для чтения
-    int n = 0; // Счетчик успешно считанных записей
+    ifstream fin(filename);
+    int n = 0;
     if (!fin) {
         cout << "Ошибка открытия файла!" << endl;
         return 0;
     }
+    
     char line[LINE_SIZE];
-    // Чтение файла построчно
+    int lineNumber = 0;
     while (n < maxRecords && fin.getline(line, LINE_SIZE)) {
-        if (line[0] == '\0') continue; // пропускаем пустые строки
-        // Временные буферы для разбора строки
-        char mark[MARK_SIZE] = {0}, boardNum[BOARD_NUM_SIZE] = {0}, timeStr[8] = {0}, aero[AERO_SIZE] = {0};
+        lineNumber++;
+        if (line[0] == '\0') continue;
+        char mark_buf[MARK_SIZE] = {0};
+        char boardNum_buf[BOARD_NUM_SIZE] = {0};
+        char timeStr_buf[8] = {0};
+        char aero_buf[AERO_SIZE] = {0};
         int word = 0, li = 0, wi = 0;
-        char* fields[4] = {mark, boardNum, timeStr, aero};
+        char* fields[4] = {mark_buf, boardNum_buf, timeStr_buf, aero_buf};
         int limits[4] = {MARK_SIZE, BOARD_NUM_SIZE, 8, AERO_SIZE};
-        // Разбиваем строку на 4 слова
         while (line[li] && word < 4) {
-            // Пропуск пробелов и табуляций
             while (line[li] == ' ' || line[li] == '\t') li++;
+            if(line[li] == '\0' && word < 4) break;
             wi = 0;
-            // Копируем очередное слово в соответствующий буфер
             while (line[li] && line[li] != ' ' && line[li] != '\t' && wi < limits[word] - 1) {
                 fields[word][wi++] = line[li++];
             }
-            fields[word][wi] = '\0';
-            word++;
+            fields[word][wi] = '\0'; 
+            word++; 
         }
-        // Если не хватает слов в строке — пропускаем строку
-        if (word < 4) continue;
-
-        Flight f;
-        // Копируем разобранные данные в структуру
-        copyStr(f.mark, mark, MARK_SIZE);
-        copyStr(f.boardNumber, boardNum, BOARD_NUM_SIZE);
-        copyStr(f.aerodrome, aero, AERO_SIZE);
-
-
-        // Парсим время (часы и минуты)
-        if (!parseTime(timeStr, f.landingHour, f.landingMinute)) {
-            cout << "Ошибка парсинга времени для записи " << (n + 1) << endl;
+        // ПРОВЕРКА 2: Поле аэродрома не пустое
+        if (strLength(aero_buf) == 0) {
+            cout << "Ошибка: отсутствует значение для аэродрома (пустое поле) в строке " << lineNumber << endl;
             continue;
         }
-        // Проверяем корректность данных, сохраняем запись, если все валидно
-        if (isValidFlight(f)) {
+        // ПРОВЕРКА 3: Корректность значения аэродрома (AP1, AP2, AP3)
+        if (!isAerodromeValid(aero_buf)) {
+            cout << "Ошибка: некорректный код аэродрома '" << aero_buf 
+                 << "' в строке " << lineNumber << ". Ожидался AP1, AP2 или AP3." << endl;
+            continue;
+        }
+        Flight f;
+        copyStr(f.mark, mark_buf, MARK_SIZE);
+        copyStr(f.boardNumber, boardNum_buf, BOARD_NUM_SIZE);
+        copyStr(f.aerodrome, aero_buf, AERO_SIZE);
+        if (!parseTime(timeStr_buf, f.landingHour, f.landingMinute)) {
+            cout << "Ошибка парсинга времени для записи '" << timeStr_buf << "' в строке " << lineNumber << endl;
+            continue;
+        }
+        if (isValidFlightData(f)) {
             flights[n++] = f;
         } else {
-            cout << "Некорректные данные в строке " << (n + 1) << endl;
+            cout << "Ошибка: некорректные данные (марка или бортовой номер) в строке " << lineNumber << endl;
         }
     }
     return n;
 }
 
-// Выводит таблицу рейсов в консоль
+// Выводит таблицу рейсов (без сортировки)
 void printFlights(const Flight flights[], int n) {
-    // Ширина столбцов для красивого вывода
     const int w1 = 10, w2 = 12, w3 = 8, w4 = 8;
-    // Заголовки столбцов
     cout << left
          << setw(w1) << "Марка" << "  "
          << setw(w2) << "Бортовой №" << "  "
          << setw(w3) << "Время" << "  "
          << setw(w4) << "Аэродром"
          << endl;
-    // Разделительная линия
     cout << setfill('-') << setw(w1 + w2 + w3 + w4 + 6) << "" << setfill(' ') << endl;
-    // Вывод данных по каждому рейсу
     for (int i = 0; i < n; ++i) {
         cout << left << setw(w1) << flights[i].mark << "  "
              << left << setw(w2) << flights[i].boardNumber << "  "
@@ -226,85 +220,95 @@ void printFlights(const Flight flights[], int n) {
     }
 }
 
-// Сортирует индексы рейсов по времени посадки (от ранних к поздним)
-void indexBubbleSort(const Flight flights[], int idx[], int n) {
-    // Инициализация массива индексов
-    for (int i = 0; i < n; ++i) idx[i] = i;
-    // Пузырьковая сортировка по времени посадки
+// Сортирует массив FlightIndex по времени посадки (от ранних к поздним)
+void indexSort(FlightIndex indexes[], int n) {
     for (int i = 0; i < n-1; ++i) {
         for (int j = 0; j < n-1-i; ++j) {
-            if (landingTimeToMinutes(flights[idx[j]]) > landingTimeToMinutes(flights[idx[j+1]])) {
-                int tmp = idx[j];
-                idx[j] = idx[j+1];
-                idx[j+1] = tmp;
+            if (indexes[j].time > indexes[j+1].time) {
+                FlightIndex tmp = indexes[j];
+                indexes[j] = indexes[j+1];
+                indexes[j+1] = tmp;
             }
         }
     }
 }
 
-// Выводит рейсы, приземлившиеся на указанный аэродром, отсортированные по времени посадки
-void printFlightsByAerodrome(const Flight flights[], const int idx[], int n, const char* targetAerodrome) {
-    cout << "\nСамолеты на аэродроме " << targetAerodrome << " (отсортировано по времени посадки):" << endl;
-    // Ширина столбцов
+// Выводит рейсы по индексной структуре (отсортированные по времени)
+void printFlightsByIndex(const Flight flights[], const FlightIndex indexes[], int n) {
     const int w1 = 10, w2 = 12, w3 = 8, w4 = 8;
-    // Заголовки
     cout << left
          << setw(w1) << "Марка" << "  "
          << setw(w2) << "Бортовой №" << "  "
          << setw(w3) << "Время" << "  "
          << setw(w4) << "Аэродром"
          << endl;
-    // Разделительная линия
     cout << setfill('-') << setw(w1 + w2 + w3 + w4 + 6) << "" << setfill(' ') << endl;
-    bool found = false;
-    // Проходим по отсортированным индексам и выводим только нужный аэродром
     for (int i = 0; i < n; ++i) {
-        int k = idx[i];
-        if (areStringsEqual(flights[k].aerodrome, targetAerodrome)) {
-            cout << left << setw(w1) << flights[k].mark << "  "
-                 << left << setw(w2) << flights[k].boardNumber << "  "
-                 << right << setw(2) << setfill('0') << flights[k].landingHour << ":"
-                 << setw(2) << setfill('0') << flights[k].landingMinute << setfill(' ') << "  "
-                 << left << setw(w4) << flights[k].aerodrome << endl;
-            found = true;
-        }
-    }
-    if (!found) {
-        cout << "Нет данных для этого аэродрома." << endl;
+        const Flight& f = flights[indexes[i].idx];
+        cout << left << setw(w1) << f.mark << "  "
+             << left << setw(w2) << f.boardNumber << "  "
+             << right << setw(2) << setfill('0') << f.landingHour << ":"
+             << setw(2) << setfill('0') << f.landingMinute << setfill(' ') << "  "
+             << left << setw(w4) << f.aerodrome << endl;
     }
 }
 
-// Точка входа в программу
 int main(int argc, char* argv[]) {
-    // Проверка наличия имени файла в аргументах командной строки
     if (argc < 2) {
         cout << "Использование: " << argv[0] << " <файл_данных>" << endl;
         return 1;
     }
-    // Основной массив для хранения рейсов
     Flight flights[MAX_RECORDS];
-    // Массив индексов для сортировки
-    int idx[MAX_RECORDS];
-    // Считываем рейсы из файла
+    FlightIndex indexes[MAX_RECORDS];
     int n = readFlights(argv[1], flights, MAX_RECORDS);
 
     if (n == 0) {
-        cout << "Нет данных для обработки." << endl;
+        cout << "Нет данных для обработки (возможно, отсутствие файла)." << endl;
         return 1;
     }
 
-
-    // Выводим исходные данные
-    cout << "Исходные данные:" << endl;
+    cout << "\nИсходные данные (только корректные записи):" << endl;
     printFlights(flights, n);
-    // Сортируем индексы по времени посадки
-    indexBubbleSort(flights, idx, n);
 
-    // Выводим данные по каждому аэродрому
-    printFlightsByAerodrome(flights, idx, n, "АП1");
-    printFlightsByAerodrome(flights, idx, n, "АП2");
-    printFlightsByAerodrome(flights, idx, n, "АП3");
+    // Заполнение индексной структуры
+    for (int i = 0; i < n; ++i) {
+        indexes[i].idx = i;
+        indexes[i].time = landingTimeToMinutes(flights[i]);
+    }
+    // Сортировка индексной структуры по времени
+    indexSort(indexes, n);
+
+    cout << "\nДанные, отсортированные по времени посадки (через индексную структуру):" << endl;
+    printFlightsByIndex(flights, indexes, n);
+
+    // По каждому аэродрому также можно выводить через индексную структуру:
+    const char* aerodromes[3] = {"AP1", "AP2", "AP3"};
+    for (int ad = 0; ad < 3; ++ad) {
+        cout << "\nСамолеты на аэродроме " << aerodromes[ad] << " (отсортировано по времени посадки):" << endl;
+        const int w1 = 10, w2 = 12, w3 = 8, w4 = 8;
+        cout << left
+             << setw(w1) << "Марка" << "  "
+             << setw(w2) << "Бортовой №" << "  "
+             << setw(w3) << "Время" << "  "
+             << setw(w4) << "Аэродром"
+             << endl;
+        cout << setfill('-') << setw(w1 + w2 + w3 + w4 + 6) << "" << setfill(' ') << endl;
+        bool found = false;
+        for (int i = 0; i < n; ++i) {
+            const Flight& f = flights[indexes[i].idx];
+            if (areStringsEqual(f.aerodrome, aerodromes[ad])) {
+                cout << left << setw(w1) << f.mark << "  "
+                     << left << setw(w2) << f.boardNumber << "  "
+                     << right << setw(w3-6) << setfill('0') << f.landingHour << ":"
+                     << setw(2) << setfill('0') << f.landingMinute << setfill(' ') << "  "
+                     << left << setw(w4) << f.aerodrome << endl;
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "Нет данных для этого аэродрома." << endl;
+        }
+    }
 
     return 0;
 }
-
